@@ -30,7 +30,7 @@
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
         <!-- cordova-headers -->
-        <meta http-equiv="Content-Security-Policy" content="default-src https://code.jquery.com https://fonts.gstatic.com 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta http-equiv="Content-Security-Policy" content="default-src https://code.jquery.com https://fonts.gstatic.com https://app-online-enrollment.herokuapp.com/ 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
 
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
@@ -42,14 +42,23 @@
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
         <title>LOGIN USER</title>
+        <div></div>
     </head>
     <body>
-        <div class="app">
-            <h1>Entra usuari</h1>
-            <input type="text" name="user" id="user">
-            <input type="password" name="password" id="password">
-            <button id="login_button">Entra</button>
-            <button id="register_button" disabled="disabled">Registra't</button>
+        <div class="box">
+            <form>
+                <span class="text-center">ENTRA USUARI</span>
+                <div class="input-container">
+                    <input type="text" name="email" id="email"/>
+                    <label>Email</label>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="password" id="password"/>
+                    <label>Contrasenya</label>
+                </div>
+                <button id="login_button" class="button">Entra</button>
+            </form>
+            <!--button id="register_button" disabled="disabled">Registra't</button-->
         </div>
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

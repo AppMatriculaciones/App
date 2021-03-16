@@ -10,17 +10,18 @@
 
 function APIlogin(){
 
-	var user = $('#user').val();
+	var user = $('#email').val();
 	var pass = $('#password').val();
 	$.ajax({
-	  method: "GET",
-	  url: "",
+	  method: "POST",
+	  url: "https://app-online-enrollment.herokuapp.com/",
 	  dataType: "json",
 	}).done(function (msg) {
-		alert("DONE!");  
-	}).fail(function (msg) {
+		//alert("DONE");
+		
+	}).fail(function () {
+		//alert("FALLO");
 	});
-
 	location.href='menu.html';
 }
 
