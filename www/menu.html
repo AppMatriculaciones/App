@@ -45,17 +45,45 @@
     </head>
     <body>
         <div class="section.no-pad-bot" id="index-banner">
-        <ul id="tabs-swipe-demo" class="tabs">
-          <li class="tab col s3"><a href="#Dashboard"><span class="material-icons">dashboard</span></a></li>
-          <li class="tab col s3"><a href="#Requeriments"><span class="material-icons">fact_check</span></a></li>
-          <li class="tab col s3"><a href="#UFSuperades">UF's APROVADES</a></li>
-          <li class="tab col s3"><a href="#DadesPersonals"><span class="material-icons">settings_accessibility</span></a></li>
-        </ul>
-        <div id="Dashboard" class="white">TEST 1</div>
-        <div id="Requeriments" class="white">Test 2</div>
-        <div id="UFSuperades" class="white">Test 3</div>
-        <div id="DadesPersonals" class="white">Test 4</div>
-  </div>
+            <ul id="tabs-swipe-demo" class="tabs">
+              <li class="tab col s3"><a href="#Dashboard"><span class="material-icons">dashboard</span></a></li>
+              <li class="tab col s3"><a href="#Requeriments"><span class="material-icons">fact_check</span></a></li>
+              <li class="tab col s3"><a href="#UFSuperades">UF's APROVADES</a></li>
+              <li class="tab col s3"><a href="#DadesPersonals"><span class="material-icons">settings_accessibility</span></a></li>
+            </ul>
+            <div id="Dashboard" class="white">
+                <table>
+                    <tr>
+                        <th>TIPO DE DOCUMENTO</th>
+                        <th>DOCUMENTO</th>
+                        <th>ESTADO</th>
+                    </tr>
+                    <tr>
+                        <td>DNI parte delantera: </td>
+                        <td><input type="file"name="dni_file" accept=".jpg,.png" multiple></td>
+                        <td><span id="frontDNIstatus" class="">1</span></td>
+                    </tr>
+                    <tr>
+                        <td>DNI parte trasera: </td>
+                        <td><input type="file"name="dni_file2"accept=".jpg,.png" multiple></td>
+                        <td><span id="rearDNIstatus" class="">1</span></td>
+                    </tr>
+                    <tr>
+                        <td>Expediente academico: </td>
+                        <td><input type="file"name="boletin" accept=".jpg,.png" multiple></td>
+                        <td><span id="notesStatus" class="">1</span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><button id="sendBtn">ENVIAR</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="Requeriments" class="white">Test 2</div>
+            <div id="UFSuperades" class="white">Test 3</div>
+            <div id="DadesPersonals" class="white">Test 4</div>
+        </div>
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
