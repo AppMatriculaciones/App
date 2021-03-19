@@ -30,7 +30,7 @@
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
         <!-- cordova-headers -->
-        <meta http-equiv="Content-Security-Policy" content="default-src https://code.jquery.com https://fonts.gstatic.com https://app-online-enrollment.herokuapp.com/ 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta http-equiv="Content-Security-Policy" content="default-src https://code.jquery.com https://fonts.gstatic.com https://appmatriculacioaaj.herokuapp.com http://localhost:5000 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
 
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
@@ -46,18 +46,16 @@
     </head>
     <body>
         <div class="box">
-            <form>
-                <span class="text-center">ENTRA USUARI</span>
-                <div class="input-container">
-                    <input type="text" name="email" id="email"/>
-                    <label>Email</label>
-                </div>
-                <div class="input-container">
-                    <input type="password" name="password" id="password"/>
-                    <label>Contrasenya</label>
-                </div>
-                <button id="login_button" class="login-button">Entra</button>
-            </form>
+            <span class="text-center">ENTRA USUARI</span>
+            <div class="input-container">
+                <input type="text" name="email" id="email"/>
+                <label>Email</label>
+            </div>
+            <div class="input-container">
+                <input type="password" name="password" id="password"/>
+                <label>Contrasenya</label>
+            </div>
+            <button id="login_button" class="login-button">Entra</button>
             <!--button id="register_button" disabled="disabled">Registra't</button-->
         </div>
         <!--  Scripts-->

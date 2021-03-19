@@ -3,7 +3,10 @@
   	semaforoColors();
   	$('.sidenav').sidenav();
   	$('.tabs').tabs({"swipeable":true});
+
+  	// Listener para el boton de LOGIN
     $('#login_button').click(APIlogin);
+    // Listener para enviar los documentos del DashBoard
     $('#sendBtn').click(sendDocs);
  
   }); // end of document ready
@@ -26,14 +29,14 @@ function APIlogin(){
 	var pass = $('#password').val();
 	$.ajax({
 	  method: "GET",
-	  url: /*"https://appmatriculacioaaj.herokuapp.com/login/student/"email+'/'+pass*/"",
+	  url: "https://appmatriculacioaaj.herokuapp.com/login/student/"+email+'/'+pass,
 	  dataType: "json",
 	}).done(function (msg) {
 		alert("DONE");
 		location.href='menu.html';
 	}).fail(function () {
 		alert("FALLO");
-		location.href='menu.html';
+		//location.href='menu.html';
 	});
 }
 
