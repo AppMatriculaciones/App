@@ -32,11 +32,9 @@ function APIlogin(){
 	  url: "https://appmatriculacioaaj.herokuapp.com/login/student/"+email+'/'+pass,
 	  dataType: "json",
 	}).done(function (msg) {
-		alert("DONE");
 		location.href='menu.html';
 	}).fail(function () {
-		alert("FALLO");
-		//location.href='menu.html';
+		alert("Login failed");
 	});
 }
 
