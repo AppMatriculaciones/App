@@ -6197,10 +6197,10 @@ button:focus {
   background-color: #2ab7a9;
 }
 
-label {
+/*label {
   font-size: 0.8rem;
   color: #9e9e9e;
-}
+}*/
 
 /* Text Inputs + Textarea
    ========================================================================== */
@@ -6814,12 +6814,6 @@ textarea.materialize-textarea {
 
 /* Radio Buttons
    ========================================================================== */
-[type="radio"]:not(:checked),
-[type="radio"]:checked {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
 
 [type="radio"]:not(:checked) + span,
 [type="radio"]:checked + span {
@@ -6938,12 +6932,12 @@ textarea.materialize-textarea {
 /* Checkboxes
    ========================================================================== */
 /* Remove default checkbox */
-[type="checkbox"]:not(:checked),
+/*[type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {
   position: absolute;
   opacity: 0;
   pointer-events: none;
-}
+}*/
 
 [type="checkbox"] {
   /* checkbox aspect */
@@ -7209,7 +7203,7 @@ textarea.materialize-textarea {
           box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
-input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
+/*input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
 input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
   -webkit-transform: scale(2.4);
           transform: scale(2.4);
@@ -7231,7 +7225,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 .switch label input[type=checkbox][disabled] + .lever:after,
 .switch label input[type=checkbox][disabled]:checked + .lever:after {
   background-color: #949494;
-}
+}*/
 
 /* Select Field
    ========================================================================== */
@@ -9182,6 +9176,8 @@ input[type=range]::-ms-thumb {
   }
 }
 
+/* EXTRA CSS THINGS */
+
 span.redCirc {
   background: red;
    border-radius: 0.8em;
@@ -9222,4 +9218,9 @@ span.green {
   margin-right: 15px;
   text-align: center;
   width: 1.6em; 
+}
+
+.leftPad {
+  background-color: #FFFFFF !important;
+  padding-left: 20px;
 }
