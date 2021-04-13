@@ -145,7 +145,7 @@ function buttons(profile){
 		if(response == true){
 			alert("Nuevo perfil seleccionado: "+profile.replace('_',' '));
 		} else {
-			alert("false");
+			alert("Perfil NO seleccionado");
 		}
 	});
 }
