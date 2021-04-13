@@ -8,6 +8,7 @@
   	// Funciones que crean los tabs
 	tabSelectCicles(ajaxUfs);
 	tabProfiles(profiles);
+	//tabUfsEnrollement();
   	// Listener para el boton de LOGIN
     $('#login_button').click(APIlogin);
     // Listener para enviar los documentos del DashBoard
@@ -31,65 +32,19 @@ var profiles = [
 
 // Llamada a DB para recuperar ciclos de inscripcion.
 var ajaxUfs = [
-  		{
-  			mpname: "mp01",
-	  		uf:[
-	  			{
-	  				name:"uf1"
-	  			},
-	  			{
-	  				name:"uf2"
-	  			},
-	  			{
-	  				name:"uf3"
-	  			}
-	  		]
+  		{	mpname: "mp01",
+	  		uf:[{name:"uf1"},
+	  			{name:"uf2"},
+	  			{name:"uf3"}]
 	  	},
-	  	{
-  			mpname: "mp02",
-	  		uf:[
-	  			{
-	  				name:"uf1"
-	  			},
-	  			{
-	  				name:"uf2"
-	  			},
-	  			{
-	  				name:"uf3"
-	  			}
-	  		]
+	  	{	mpname: "mp02",
+	  		uf:[{name:"uf1"},
+	  			{name:"uf2"},
+	  			{name:"uf3"}]
 	  	}
   	];
 
-function semaforoColors(){
-	var status = $('#frontDNIstatus');
-	status.addClass(fDNIstat);
-	status = $('#rearDNIstatus');
-	status.addClass(rDNIstat);
-	status = $('#notesStatus');
-	status.addClass(notesStatus);
-}
-
-function tabSelectCicles(ufs){
-	for (var i = 0; i <= ufs.length - 1; i++) {
-		console.log(ufs[i].mpname);
-		$('#UFs').append("<h5><label>"+ufs[i].mpname+"   </label><input id='"+ufs[i].mpname+"' type='checkbox'></h5>");
-		for (var j = 0; j <= ufs[i].uf.length - 1; j++) {
-			console.log(ufs[i].uf[j].name);
-			$('#UFs').append("<label>"+ufs[i].uf[j].name+"  </label><input mp='"+ufs[i].mpname+"' type='checkbox'><br>");
-		}
-	}
-    // Listener para los checkbox de las mp
-	checkBoxes(ufs);
-}
-
-function tabProfiles(profiles){
-	for (var i = 0; i <= profiles.length-1; i++) {
-		$('#Perfil').append("<tr><td><button id="+profiles[i].type+">"+profiles[i].type+"</button></td></tr>");
-		buttons(profiles[i].type);
-	}
-}
-
+// Llamada API para el login
 function APIlogin(){
 	var email = $('#email').val();
 	var pass = $('#password').val();
@@ -109,6 +64,56 @@ function APIlogin(){
 	});
 }
 
+/*async function tabUfsEnrollement(){
+	var code = await recoverCarreerCode();
+	alert(code);
+}
+
+async function recoverCarreerCode(){
+	$.ajax({
+	  method: "GET",
+	  url: "http://localhost:5000/career/getbyid/604d0322aa3e991914dbb252",
+	  dataType: "json",
+	}).done(function (msg){
+		if(msg != null){
+			alert(msg.code)
+		} else {
+			alert("Error");
+		}
+	}).fail(function () {
+		alert("URL ERROR");
+	});
+}*/
+
+function semaforoColors(){
+	var status = $('#frontDNIstatus');
+	status.addClass(fDNIstat);
+	status = $('#rearDNIstatus');
+	status.addClass(rDNIstat);
+	status = $('#notesStatus');
+	status.addClass(notesStatus);
+}
+
+function tabSelectCicles(ufs){
+	for (var i = 0; i <= ufs.length - 1; i++) {
+		$('#UFs').append("<h5><label>"+ufs[i].mpname+"   </label><input id='"+ufs[i].mpname+"' type='checkbox'></h5>");
+		for (var j = 0; j <= ufs[i].uf.length - 1; j++) {
+			$('#UFs').append("<label>"+ufs[i].uf[j].name+"  </label><input mp='"+ufs[i].mpname+"' type='checkbox'><br>");
+		}
+	}
+    // Listener para los checkbox de las mp
+	checkBoxes(ufs);
+}
+
+function tabProfiles(profiles){
+	$('#UFs').append("<table>");
+	for (var i = 0; i <= profiles.length-1; i++) {
+		$('#Perfil').append("<tr><td><button id="+profiles[i].type+">"+profiles[i].type.replace('_',' ')+"</button></td></tr>");
+		buttons(profiles[i].type);
+	}
+	$('#UFs').append("</table>");
+}
+
 function sendDocs(){
 	var status = $('#frontDNIstatus');
 	status.removeClass('redCirc').addClass('ambar');
@@ -121,7 +126,6 @@ function sendDocs(){
 function checkBoxes(ufs){
 
 	for (let i = 0; i <= ufs.length - 1; i++) {
-		console.log(ufs[i].mpname);
 		$('#'+ufs[i].mpname).change(function() {
 	   		if (!this.checked) {
 				var status = $("input[mp='"+ufs[i].mpname+"']");
@@ -134,15 +138,14 @@ function checkBoxes(ufs){
 	}
 }
 
+// Listener para cambiar de perfil de requerimientos
 function buttons(profile){
-
-	var profText = profile;
-	console.log(profText);
-		$('#'+profText).click(function() {
-			if(profile == "Familia_monoparental"){
-				alert("Familia monoparental");
-			} else {
-				alert(profile);
-			}
-		});
+	$('#'+profile).click(function() {
+		var response = confirm("Cambiar al perfil: "+profile.replace('_',' ')+"?");
+		if(response == true){
+			alert("Nuevo perfil seleccionado: "+profile.replace('_',' '));
+		} else {
+			alert("false");
+		}
+	});
 }
