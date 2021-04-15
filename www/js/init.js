@@ -6,9 +6,9 @@
   	$('.tabs').tabs({"swipeable":true});
 
   	// Funciones que crean los tabs
-	tabSelectCicles(ajaxUfs);
+	//tabSelectCicles(ajaxUfs);
 	tabProfiles(profiles);
-	//tabUfsEnrollement();
+	tabUfsEnrollement();
   	// Listener para el boton de LOGIN
     $('#login_button').click(APIlogin);
     // Listener para enviar los documentos del DashBoard
@@ -17,10 +17,10 @@
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 
+var student_token = "";
+
 // Llamada a DB para saber el estado.
 var fDNIstat = 'redCirc', rDNIstat = 'redCirc', notesStatus = 'redCirc';
-
-var student_id;
 
 // Llamada a DB para recuperar tipos de perfil de requerimiento
 var profiles = [
@@ -29,20 +29,6 @@ var profiles = [
 	{ type:"Discapacidad"},
 	{ type:"Perfil_estandard"}
 ];
-
-// Llamada a DB para recuperar ciclos de inscripcion.
-var ajaxUfs = [
-  		{	mpname: "mp01",
-	  		uf:[{name:"uf1"},
-	  			{name:"uf2"},
-	  			{name:"uf3"}]
-	  	},
-	  	{	mpname: "mp02",
-	  		uf:[{name:"uf1"},
-	  			{name:"uf2"},
-	  			{name:"uf3"}]
-	  	}
-  	];
 
 // Llamada API para el login
 function APIlogin(){
@@ -54,8 +40,9 @@ function APIlogin(){
 	  dataType: "json",
 	}).done(function (msg){
 		if(msg._id != null){
-			student_id = msg._id;
+			student_token = msg.token;
 			location.href='menu.html';
+			alert('Token: '+student_token);
 		}else {
 			alert("Login failed");
 		}		
@@ -64,26 +51,58 @@ function APIlogin(){
 	});
 }
 
-/*async function tabUfsEnrollement(){
-	var code = await recoverCarreerCode();
-	alert(code);
+function tabUfsEnrollement(){
+	var code = recoverCarreerCode();
 }
 
-async function recoverCarreerCode(){
+function recoverCarreerCode(){
+	console.log('Token: '+student_token);
 	$.ajax({
 	  method: "GET",
 	  url: "http://localhost:5000/career/getbyid/604d0322aa3e991914dbb252",
 	  dataType: "json",
 	}).done(function (msg){
 		if(msg != null){
-			alert(msg.code)
+			recoverMpsByCarreerCode(msg.code);
 		} else {
 			alert("Error");
 		}
 	}).fail(function () {
-		alert("URL ERROR");
+		alert("Error al recuperar Cicles");
 	});
-}*/
+}
+
+function recoverMpsByCarreerCode(code){
+	$.ajax({
+	  method: "GET",
+	  url: "http://localhost:5000/mps/getbycareer/"+code,
+	  dataType: "json",
+	}).done(function (msg){
+		if(msg != null){
+			recoverUfsByCarreerCode(code, msg);
+		} else {
+			alert("Error");
+		}
+	}).fail(function () {
+		alert("Error al recuperar Moduls");
+	});
+}
+
+function recoverUfsByCarreerCode(code, mps){
+	$.ajax({
+	  method: "GET",
+	  url: "http://localhost:5000/ufs/getbycareer/"+code,
+	  dataType: "json",
+	}).done(function (msg){
+		if(msg != null){
+			tabSelectCicles(mps, msg);
+		} else {
+			alert("Error");
+		}
+	}).fail(function () {
+		alert("Error al recuperar Unitats Formatives");
+	});
+}
 
 function semaforoColors(){
 	var status = $('#frontDNIstatus');
@@ -94,15 +113,22 @@ function semaforoColors(){
 	status.addClass(notesStatus);
 }
 
-function tabSelectCicles(ufs){
-	for (var i = 0; i <= ufs.length - 1; i++) {
-		$('#UFs').append("<h5><label>"+ufs[i].mpname+"   </label><input id='"+ufs[i].mpname+"' type='checkbox'></h5>");
-		for (var j = 0; j <= ufs[i].uf.length - 1; j++) {
-			$('#UFs').append("<label>"+ufs[i].uf[j].name+"  </label><input mp='"+ufs[i].mpname+"' type='checkbox'><br>");
+function tabSelectCicles(mps, ufs){
+
+	$('#UFs').append("<h3><label>Seleccionar todo	</label><input id='selectAll' type='checkbox'></h3>");
+
+	for (var i = 0; i <= mps.length - 1; i++) {
+		$('#UFs').append("<h5><label>"+mps[i].name+"   </label><input id='"+mps[i].code+"' type='checkbox'></h5>");
+		for (var j = 0; j <= ufs.length - 1; j++) {
+			if(mps[i]._id == ufs[j].mp_id){
+				$('#UFs').append("<label>"+ufs[j].name+"  </label><input id='"+ufs[j]._id+"' mp='"+mps[i].code+"' type='checkbox'><br>");
+			}
 		}
 	}
+ 
+	$('#UFs').append("<button id='saveUfs'> Matricularse </button>");
     // Listener para los checkbox de las mp
-	checkBoxes(ufs);
+	checkBoxesListeners(mps, ufs);
 }
 
 function tabProfiles(profiles){
@@ -123,19 +149,67 @@ function sendDocs(){
 	status.removeClass('redCirc').addClass('ambar');
 }
 
-function checkBoxes(ufs){
+function checkBoxesListeners(mps, ufs){
 
-	for (let i = 0; i <= ufs.length - 1; i++) {
-		$('#'+ufs[i].mpname).change(function() {
+	var allSelected;
+	$('#selectAll').change(function() {
+		if(!this.checked){
+			allSelected = $('input[type="checkbox"]').prop("checked", false);
+		} else {
+			allSelected = $('input[type="checkbox"]').prop("checked", true);			
+		}
+		
+	});
+
+	var mpListener;
+	for (let i = 0; i <= mps.length - 1; i++) {
+		$('#'+mps[i].code).change(function() {
 	   		if (!this.checked) {
-				var status = $("input[mp='"+ufs[i].mpname+"']");
-				status.prop("checked", false);
+				mpListener = $("input[mp='"+mps[i].code+"']");
+				mpListener.prop("checked", false);
 			} else {
-				var status = $("input[mp='"+ufs[i].mpname+"']");
-				status.prop("checked", true);
+				mpListener = $("input[mp='"+mps[i].code+"']");
+				mpListener.prop("checked", true);
 			}
     	});
 	}
+
+	$('#saveUfs').click(function(){
+		var arrayUfs = [];
+		for (let i = 0; i <= ufs.length - 1; i++){
+			if($('#'+ufs[i]._id).prop('checked')){
+				arrayUfs.push(ufs[i]._id);
+			}
+    	}
+
+    	var response = confirm("Seleccion correcta?");
+		if(response == true){
+			addUfs(arrayUfs);
+		} else {
+			alert("No matriculado");
+		}
+	});
+	
+} 
+
+function addUfs(arrayUfs){
+
+	$.ajax(
+	{
+		url : "http://localhost:5000/enrollment/addufs",
+		type: "POST",
+		data : {
+			token : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQW1hZG9yIiwiaWF0IjoxNjE2MDg3OTk1fQ.SY7NmI3DI56O9qRccVGixSrUnxf00vGZEh5y7lwauCE',
+			ufs : arrayUfs
+		}
+	})
+	.done(function(data) {
+		console.log(data);
+		alert("Matriculado correctamente");
+	})
+	.fail(function(data) {
+		alert( "error" );
+	});
 }
 
 // Listener para cambiar de perfil de requerimientos
