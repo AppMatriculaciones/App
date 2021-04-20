@@ -41,7 +41,7 @@
         <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
-        <title>LOGIN USER</title>
+        <title>MENU</title>
     </head>
     <header>
         <h1></h1>
@@ -51,45 +51,21 @@
             <ul id="tabs-swipe-demo" class="tabs center">
               <li class="tab col s3"><a href="#Dashboard"><span class="material-icons">dashboard</span></a></li>
               <li class="tab col s3"><a href="#Requeriments"><span class="material-icons">fact_check</span></a></li>
-              <li class="tab col s3"><a href="#UFs">UF's APROVADES</a></li>
+              <li class="tab col s3"><a href="#UFs">Selector UF's </a></li>
               <li class="tab col s3"><a href="#Perfil"><span class="material-icons">settings_accessibility</span></a></li>
             </ul>
             <div id="Dashboard" class="white">
-                <table>
-                    <tr>
-                        <th>TIPO DE DOCUMENTO</th>
-                        <th>DOCUMENTO</th>
-                        <th>ESTADO</th>
-                    </tr>
-                    <tr>
-                        <td>DNI parte delantera: </td>
-                        <td><input type="file"name="dni_file" accept=".jpg,.png" multiple></td>
-                        <td><span id="frontDNIstatus" class="">1</span></td>
-                    </tr>
-                    <tr>
-                        <td>DNI parte trasera: </td>
-                        <td><input type="file"name="dni_file2"accept=".jpg,.png" multiple></td>
-                        <td><span id="rearDNIstatus" class="">1</span></td>
-                    </tr>
-                    <tr>
-                        <td>Expediente academico: </td>
-                        <td><input type="file"name="boletin" accept=".jpg,.png" multiple></td>
-                        <td><span id="notesStatus" class="">1</span></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><button id="sendBtn">ENVIAR</button></td>
-                    </tr>
-                </table>
+                <table id="dashboardTable"></table>
             </div>
-            <div id="Requeriments" class="white"></div>
+            <div id="Requeriments" class="white">
+                <table id="requerimentsTable"></table>
+            </div>
             <div id="UFs" class="leftPad"></div>
             <div id="Perfil" class="white"></div>
         </div>
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
-        <script src="js/init.js"></script>
+        <script src="js/menu.js"></script>
     </body>
 </html>
