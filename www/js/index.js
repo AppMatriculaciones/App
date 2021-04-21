@@ -15,7 +15,7 @@ function APIlogin(){
 	var pass = $('#password').val();
 	$.ajax({
 	  method: "GET",
-	  url: localUrl+"/login/student/"+email+'/'+pass,
+	  url: herokuUrl+"/login/student/"+email+'/'+pass,
 	  dataType: "json",
 	}).done(function (msg){
 		if(msg.token != null){
