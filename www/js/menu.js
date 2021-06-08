@@ -17,8 +17,8 @@
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 
-var herokuUrl = "http://localhost:5000";
-//var herokuUrl = "https://appmatriculacioaaj.herokuapp.com";
+//var herokuUrl = "http://localhost:5000";
+var herokuUrl = "https://appmatriculacioaaj.herokuapp.com";
 
 var studentData = "";
 
