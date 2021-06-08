@@ -4,6 +4,8 @@
   	$('.sidenav').sidenav();
   	$('.tabs').tabs({"swipeable":true});
 
+    getStudent();
+    console.log(localStorage.getItem('token'));
   	// Funciones que crean los tabs
     tabDashboard();
     tabRequeriments();
@@ -18,6 +20,8 @@
 var herokuUrl = "http://localhost:5000";
 //var herokuUrl = "https://appmatriculacioaaj.herokuapp.com";
 
+var studentData = "";
+
 // Llamada a DB para saber el estado.
 var fDNIstat = 'redCirc', rDNIstat = 'redCirc', notesStatus = 'redCirc';
 
@@ -31,6 +35,25 @@ var profiles = [
       ]
   }
 ];
+
+function getStudent(){
+
+  var token_ = localStorage.getItem('token');
+
+  $.ajax({
+    method: "GET",
+    url: herokuUrl+"/student/getbytoken/"+token_,
+    dataType: "json"
+  }).done(function (msg){
+    if(msg != null){
+      studentData = msg;
+    } else {
+      alert(msg);
+    }
+  }).fail(function () {
+    alert("Error al encontrar student");
+  });
+}
 
 function getProfiles(){
 
@@ -137,6 +160,25 @@ function addUfs(arrayUfs){
   });
 }
 
+function changeProfile(profileId){
+  $.ajax(
+  {
+    url : herokuUrl+"/requirements_profile/update_student_rp",
+    type: "POST",
+    data : {
+      email : studentData.email,
+      requirements_profile_id : profileId
+    }
+  })
+  .done(function(data) {
+    console.log(data);
+    alert("Perfil seleccionado correctamente");
+  })
+  .fail(function(data) {
+    alert( "error" );
+  }); 
+}
+
 function tabDashboard(){
   $('#dashboardTable').append("<tr><th>TIPO DE DOCUMENTO</th><th>ESTADO</th></tr>");
   for (var j = 0; j <= profiles[0].requeriments.length - 1; j++) {
@@ -219,8 +261,8 @@ function tabSelectCicles(mps, ufs){
 function tabProfiles(profiles){
   $('#UFs').append("<table>");
   for (var i = 0; i <= profiles.length-1; i++) {
-    $('#Perfil').append("<tr><td><button id="+profiles[i].type.replace(' ','_')+">"+profiles[i].type+"</button></td></tr>");
-    buttons(profiles[i].type.replace(' ','_'));
+    $('#Perfil').append("<tr><td><button id="+profiles[i].type.replaceAll(' ','_')+">"+profiles[i].type+"</button></td></tr>");
+    buttons(profiles[i]);
   }
   $('#UFs').append("</table>");
 }
@@ -270,10 +312,12 @@ function checkBoxesListeners(mps, ufs){
 
 // Listener para cambiar de perfil de requerimientos
 function buttons(profile){
-  $('#'+profile).click(function() {
-    var response = confirm("Cambiar al perfil: "+profile.replace('_',' ')+"?");
+  $('#'+profile.type.replaceAll(' ','_')).click(function() {
+    var response = confirm("Cambiar al perfil: "+profile.type.replaceAll('_',' ')+"?");
     if(response == true){
-      alert("Nuevo perfil seleccionado: "+profile.replace('_',' '));
+      console.log(profile._id);
+      console.log(studentData.email);
+      changeProfile(profile._id);
     } else {
       alert("Perfil NO seleccionado");
     }
